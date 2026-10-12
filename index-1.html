@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Una carta para ti 💙</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;1,400&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --noche:#0b1a33; --hielo:#dff1ff; --escarcha:#b9defa; --cielo:#6fb4f0; --azul:#2f7fd6; --profundo:#17407a;
+  --serif:'Fraunces',Georgia,serif; --sans:'Nunito',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{min-height:100vh;min-height:100dvh;font-family:var(--sans);color:var(--hielo);
+  background:radial-gradient(120% 90% at 50% 0%,#17407a 0%,#0e2a52 45%,var(--noche) 100%) fixed;
+  overflow-x:hidden;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)}
+#stars{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* ---------- Sobre ---------- */
+#intro{position:relative;z-index:2;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:2.2rem;padding:1.5rem;transition:opacity .9s ease,transform .9s ease}
+#intro.fuera{opacity:0;transform:translateY(-30px);pointer-events:none}
+.sobre-wrap{perspective:1000px}
+.sobre{position:relative;width:min(78vw,340px);aspect-ratio:3/2;cursor:pointer;border:0;background:none;
+  transition:transform .4s ease;-webkit-tap-highlight-color:transparent}
+.sobre:hover{transform:translateY(-4px)}
+.sobre:focus-visible{outline:3px solid var(--hielo);outline-offset:8px;border-radius:10px}
+.sobre .cuerpo{position:absolute;inset:0;border-radius:10px;background:linear-gradient(160deg,#5aa6ee,#2f7fd6 60%,#256bbd);
+  box-shadow:0 18px 50px rgba(0,0,0,.45),0 0 60px rgba(111,180,240,.25)}
+.sobre .carta{position:absolute;left:7%;right:7%;top:8%;height:80%;background:linear-gradient(#fff,var(--hielo));
+  border-radius:6px;z-index:1;transition:transform 1s cubic-bezier(.3,.7,.2,1) .55s;
+  display:grid;place-items:center;color:var(--profundo);font-family:var(--serif);font-style:italic;font-size:1.1rem}
+.sobre .frente{position:absolute;inset:0;z-index:2;border-radius:10px;pointer-events:none;
+  clip-path:polygon(0 0,50% 55%,100% 0,100% 100%,0 100%);
+  background:linear-gradient(to top,rgba(23,64,122,.4),transparent 65%),linear-gradient(160deg,#4f9cea,#2a74c9)}
+.sobre .frente::after{content:"";position:absolute;inset:0;background:rgba(255,255,255,.14);
+  clip-path:polygon(0 100%,50% 50%,100% 100%)}
+.sobre .tapa{position:absolute;left:0;right:0;top:0;height:56%;z-index:3;transform-origin:top;
+  background:linear-gradient(#6fb4f0,#3f8fe0);clip-path:polygon(0 0,100% 0,50% 100%);
+  transition:transform .7s ease,z-index 0s .35s}
+.sobre .sello{position:absolute;left:50%;top:50%;z-index:4;transform:translate(-50%,-50%);width:46px;height:46px;
+  border-radius:50%;display:grid;place-items:center;font-size:1.3rem;background:radial-gradient(circle at 35% 30%,#fff,var(--escarcha));
+  box-shadow:0 4px 14px rgba(0,0,0,.35);transition:opacity .3s}
+.sobre.abierto .tapa{transform:rotateX(180deg);z-index:0}
+.sobre.abierto .sello{opacity:0}
+.sobre.abierto .carta{transform:translateY(-62%)}
+.pista{font-family:var(--serif);font-style:italic;font-size:1.15rem;color:var(--escarcha);text-align:center;
+  animation:latido 2.6s ease-in-out infinite}
+@keyframes latido{50%{opacity:.55}}
+
+/* ---------- Carta ---------- */
+#carta{position:relative;z-index:2;display:none;padding:3rem 1.2rem 5rem}
+#carta.visible{display:block}
+.hoja{max-width:680px;margin:0 auto;display:flex;flex-direction:column;gap:2.4rem}
+.titulo{text-align:center;font-family:var(--serif);font-weight:500;font-size:clamp(1.9rem,6vw,2.7rem);
+  line-height:1.2;color:#fff;text-shadow:0 0 28px rgba(111,180,240,.6)}
+.seccion{background:linear-gradient(160deg,rgba(223,241,255,.12),rgba(185,222,250,.06));
+  border:1px solid rgba(185,222,250,.28);border-radius:18px;padding:1.7rem 1.5rem;
+  backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);
+  opacity:0;transform:translateY(22px);transition:opacity .9s ease,transform .9s ease}
+.seccion.in{opacity:1;transform:none}
+.seccion h2{font-family:var(--serif);font-weight:500;font-size:1.4rem;color:var(--escarcha);margin-bottom:1rem}
+.seccion p{font-size:1.07rem;line-height:1.8;max-width:62ch;white-space:pre-line}
+.seccion p+p{margin-top:1.1rem}
+.seccion.final{border-color:rgba(111,180,240,.6);background:linear-gradient(160deg,rgba(111,180,240,.2),rgba(47,127,214,.1))}
+.sep{text-align:center;color:var(--cielo);letter-spacing:.8em;font-size:.9rem;margin-top:-.8rem}
+
+/* ---------- Botón final ---------- */
+.cierre{text-align:center;display:flex;flex-direction:column;align-items:center;gap:1.6rem;min-height:210px;position:relative}
+#btnGracias{font:600 1.05rem var(--sans);color:var(--noche);background:linear-gradient(135deg,#fff,var(--escarcha) 60%,var(--cielo));
+  border:0;border-radius:999px;padding:1rem 2rem;cursor:pointer;box-shadow:0 8px 30px rgba(111,180,240,.45);
+  transition:transform .25s ease,box-shadow .25s ease}
+#btnGracias:hover{transform:translateY(-3px) scale(1.03);box-shadow:0 12px 38px rgba(111,180,240,.65)}
+#btnGracias:focus-visible{outline:3px solid #fff;outline-offset:4px}
+#btnGracias[disabled]{opacity:0;pointer-events:none;position:absolute}
+#mensajeFinal{font-family:var(--serif);font-style:italic;font-size:clamp(1.3rem,4.6vw,1.8rem);line-height:1.5;color:#fff;
+  max-width:30ch;opacity:0;transform:scale(.96);transition:opacity 1.4s ease,transform 1.4s ease;
+  text-shadow:0 0 24px rgba(111,180,240,.7)}
+#mensajeFinal.in{opacity:1;transform:none}
+.estrella{position:fixed;z-index:9;pointer-events:none;color:var(--cielo);text-shadow:0 0 12px var(--azul);
+  animation:vuela 2.2s cubic-bezier(.15,.7,.3,1) forwards}
+@keyframes vuela{0%{opacity:0;transform:translate(0,0) scale(.3) rotate(0)}15%{opacity:1}
+  100%{opacity:0;transform:translate(var(--dx),var(--dy)) scale(1.2) rotate(var(--r))}}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition-duration:.01s!important;transition-delay:0s!important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<canvas id="stars" aria-hidden="true"></canvas>
+
+<!-- ======================================================================
+  TU HISTORIA: pégala completa aquí abajo, entre las etiquetas <script>,
+  desde «Bueno por dónde empezó...» hasta «bro fin». Se muestra tal cual.
+  - Párrafos: sepáralos con una línea en blanco.
+  - Secciones (opcional): empieza una línea con "## " y el título, ej: ## Cómo empezó todo
+    Si no pones ninguna, la página agrupa tus párrafos en bloques automáticamente.
+  - Puedes usar emojis, tildes y comillas sin problema.
+====================================================================== -->
+<script type="text/plain" id="historia">
+## Cómo empezó todo
+
+Bueno por dónde empezó para que sea más claro bueno ,no te mando audio porque me pongo a llorar xD, bueno estos días no pude dormir y me puse lloroso raro de mi :v
+
+Bueno empezo ya 2 mes fui a psicólogo mi madre me dijo que vaya porque como estoy abriendo el negocio tendré que hablar y todo eso y tú me conoces que no salgo y no soy de socializar acá en Perú bueno hablando hablado con el psicólogo luego me hizo una pregunta más que ver me preguntó 🕵️y última te sientes tranquilo mismo y yo pues le dije "la verdad como que en incomoda el pecho izquierdo estos dias" y ahí me hizo preguntar para saber el dolor
+
+## Lo que hablé con el psicólogo
+
+y luego me preguntó y tiene a alguien especial que te hace feliz y le dije "obvio tengo a mi querida mi hermana mi causa mi bro mi amiga de 3 años y que no cambiaría por nada en el mundo ayeeep "xD__ perdona que lo escriba asi como si no fuera serio pero si no lo hago así no sería yo , a demás que me dijo que haga esto para soltar todo ,que raro nunca hice esto 😐 pero bueno continúe:
+
+y me dijo como es mi relación contigo y bueno le conte los años que pasamos de risa de hablar wuebada y de juegos y de hablar todo los días 😆 y luego me dijo " y este año como es ahora " y bueno le dije que cambio mucho de lo de hablar todo los días se terminó de jugar también un poco solitario pero a pesar de eso hablábamos aún y con eso yo estoy feliz , y luego me dijo " pero ella pregunta y tú le mandas mensajes y te responde " pucha le dije kgon xD y bueno le dije nose la verdad nose , luego me dijo que si tenía más amigo(a) con ese tipo de rutina o solo contigo , y le dije contigo 3 años así y me preguntó " y te sientes raro porque cambio la cosas " le dije un poco pero cada quien tiene su cosas se que tienes problemas en tu casa, trabajas y estudias , eso le dije
+
+y bueno , luego me hizo más preguntas y resultó que tengo pego ansioso y yo que es esa mrd ? 🤔 Luego me explico que estoy y aquello , le dije pero que tiene que ver eso ahora , me explico ese dolor que siento poco poco es por ansiedad de descubrir y yo chucha 😮 luego me dijo que vea que te hace sentir ese dolor y bueno luego me fui y regrese rápido a casa corriendo 💨 bueno me dejó de tarea, descubrir ese dolor de pecho y luego me metí a la PC a jugar Minecraft xD
+
+## Lo que pasó con el Discord
+
+la cosa que te vi conectada jugando bedword y dije debe ser su amiga y abrí dc y te vi conectada la cosa que cuando se desconecto tu cuenta te saliste y de paso de DC y ahí ni pecho me dolio y creo que ese día te pregunté para jugar un rato pero me respondiste al día siguiente xD creo que me dijiste que estabas ocupada con otras cosas y bueno yo te crei pero una parte no y bueno luego me acordé que paso mucho sucesos así y también que era raro que juegues bed o party pero siempre que jugas siempre estabas en dc y cuando te ibas también te ibas de DC  yo la verdad nunca le di importancia a eso porque al final de cuenta yo te compré la cuenta de mc para que pueda jugar y distraerte con tus amigos <3 y tampoco miraba la necesidad que mintieras 🙂‍↔️
+
+pero bueno la cosa que una parte de mi le dolía sabes cómo que " y si es o porque me dijo eso  porque inventariar eso no creo que haga eso ya le aburrí o etc" y muchas cosas la verdad 😑
+
+## La segunda vez que fui
+
+y luego fue de nuevo al psicólogo para hablar del tema de socializar 😐 luego me preguntó si descubrí el tema del dolor del pecho y le dije lo que creo lo del tema y bueno me dijo que es 🥁 (overthinking): cuando piensas demasiado en algo y empiezas a imaginar distintas posibilidades,aunque no tengas pruebas y ansiedad me dijo. Y yo que mrd eso 😑 luego me preguntó si ya ese mismo dolor lo tenía antes y le dije que si ya 4 años con mi primer amigo en España que hice y bueno luego le conté lo que lo que pasó y como me terminó bloqueando y bueno eso al parecer generó un trauma en mi y bueno este años lo estoy pasando contigo y le dije porque recién porque ahora nunca me pasó y bueno me dijo que tenía que hablar contigo porque una parte de mi dice si es verdad o mentira lo que medias o seguro se aburrió de mi y etc y otra parte de perderte tu amistad o que pienses que soy un tipos raro de la nada por una mrd de trauma y de inseguridad que descubrí recién que tenía 🤬 y bueno le dije " siuuuuuu cuando tenga tiempo" xD
+
+## Lo que fui guardando
+
+bueno ese fue la última vez que fui y bueno la cosa que lo quise dejar así no decir nada no quiero por lo que pienso cambie la cosas y así estuve mucho tiempo y cada ves el dolor era más grande y nose porque y bueno ya en un momento no pude aguantar y bueno ese día de llamarte  me hizo muy feliz porque si te importe a pesar que estabas sen la calle 💞 Ty por eso y nose una parte de mi quería aprovecha para decirte pero otra no por miedo luego me dijiste que ya no tengo tiempo que solo duermo y que no podía entrar y yo te creo pero una parte al escuchar eso dolió feo y bueno ya me gano la kgada está que tengo en la mente 😵 desde el cumpleaños de mi madre no dormí me puse lloroso de la nada y bueno creo que ya no aguanto más la verdad y bueno eso lo que paso fin.
+
+## Lo que siento ahora
+
+Jajajaa pero bueno ahora una parte de mi dice que "no paque hago esto seguro son cosas mía que haga lo que quiera yo no soy nadie para meterme :3 ella me dirá para jugar un día 🔫 y la otra parte tiene miedo que esto cambie que me aleje que ya no me escribiera y no me contará y ni yo a ella que peor no me llamara y menos jugará pensara que jodito es este peruano ya me aburrió y etc . XD se que no piensas así yo sé cómo eres solo es una parte del  trauma de mrd que tenía 4 años atras que justo sale este año pero bueno ahora tengo miedo de la respuesta que me darás porque no quiero que cambie nada en realidad 😑 solo esto fue para sacar ese dolor del pecho porfin y recibir una respuesta y bueno eso nomás bro fin
+</script>
+
+<main id="intro">
+  <div class="sobre-wrap">
+    <button class="sobre" id="sobre" aria-label="Abrir el sobre">
+      <span class="cuerpo"></span>
+      <span class="carta">Para ti 💙</span>
+      <span class="frente"></span>
+      <span class="tapa"></span>
+      <span class="sello">⭐</span>
+    </button>
+  </div>
+  <p class="pista" id="pista">Toca el sobre ✨</p>
+</main>
+
+<article id="carta" aria-label="Carta">
+  <div class="hoja" id="hoja">
+    <h1 class="titulo">Una carta para ti 💙</h1>
+    <div id="secciones" style="display:contents"></div>
+
+    <section class="seccion final" id="seccionFinal">
+      <h2>Lo más importante</h2>
+      <p>No te reclamo nada, ¿ya? Respeto muchísimo tu tiempo y tus responsabilidades, y valoro un montón nuestros tres años de amistad. 💙</p>
+      <p>Solo quería sincerarme contigo. No quiero hacerte sentir culpable ni responsable de mi ansiedad: eso es cosa mía y no te toca cargarlo.</p>
+      <p>No hay apuro ni presión por responder. Lees cuando puedas y como quieras. ✨</p>
+    </section>
+
+    <div class="cierre">
+      <button id="btnGracias">Toca aquí ⭐</button>
+      <p id="mensajeFinal" aria-live="polite">Pase lo que pase, gracias por estos tres años de amistad. Y perdón por tremendo testamento JAJAJA xD 💙</p>
+    </div>
+  </div>
+</article>
+
+<script>
+/* ---------- Fondo de estrellas ---------- */
+(function(){
+  const c=document.getElementById('stars'),x=c.getContext('2d');let s=[],w,h;
+  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function size(){w=c.width=innerWidth;h=c.height=innerHeight;
+    s=Array.from({length:Math.min(140,Math.floor(w*h/9000))},()=>({x:Math.random()*w,y:Math.random()*h,r:Math.random()*1.5+.3,p:Math.random()*6.28,v:Math.random()*.02+.005}))}
+  function draw(){x.clearRect(0,0,w,h);
+    for(const t of s){t.p+=t.v;const a=.35+.65*Math.abs(Math.sin(t.p));
+      x.beginPath();x.arc(t.x,t.y,t.r,0,6.283);x.fillStyle='rgba(223,241,255,'+a+')';x.fill()}
+    if(!reduce)requestAnimationFrame(draw)}
+  addEventListener('resize',size);size();draw();
+})();
+
+/* ---------- Leer y organizar la historia ---------- */
+function construir(){
+  const crudo=document.getElementById('historia').textContent.replace(/^\s+|\s+$/g,'');
+  const cont=document.getElementById('secciones');
+  const bloques=[];
+  if(/^##\s/m.test(crudo)){
+    let actual=null;
+    crudo.split(/\r?\n/).forEach(l=>{
+      const m=l.match(/^##\s+(.*)$/);
+      if(m){actual={t:m[1].trim(),p:[]};bloques.push(actual)}
+      else{if(!actual){actual={t:'',p:[]};bloques.push(actual)}actual.p.push(l)}
+    });
+    bloques.forEach(b=>{b.p=b.p.join('\n').split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean)});
+  }else{
+    const ps=crudo.split(/\n\s*\n/).map(p=>p.trim()).filter(Boolean);
+    for(let i=0;i<ps.length;i+=3)bloques.push({t:'',p:ps.slice(i,i+3)});
+  }
+  bloques.forEach((b,i)=>{
+    const sec=document.createElement('section');sec.className='seccion';
+    if(b.t){const h=document.createElement('h2');h.textContent=b.t;sec.appendChild(h)}
+    b.p.forEach(t=>{const p=document.createElement('p');p.textContent=t;sec.appendChild(p)});
+    cont.appendChild(sec);
+    if(i<bloques.length-1){const d=document.createElement('div');d.className='sep';d.textContent='✦ ✦ ✦';d.setAttribute('aria-hidden','true');cont.appendChild(d)}
+  });
+}
+construir();
+
+/* ---------- Aparición suave al hacer scroll ---------- */
+function observar(){
+  const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}}),{threshold:.12});
+  document.querySelectorAll('.seccion').forEach(s=>io.observe(s));
+}
+
+/* ---------- Abrir sobre ---------- */
+const sobre=document.getElementById('sobre');
+sobre.addEventListener('click',()=>{
+  if(sobre.classList.contains('abierto'))return;
+  sobre.classList.add('abierto');
+  document.getElementById('pista').style.opacity=0;
+  setTimeout(()=>{
+    document.getElementById('intro').classList.add('fuera');
+    const carta=document.getElementById('carta');
+    setTimeout(()=>{
+      document.getElementById('intro').style.display='none';
+      carta.classList.add('visible');scrollTo(0,0);observar();
+    },800);
+  },1900);
+});
+
+/* ---------- Botón final: estrellas azules ---------- */
+const btn=document.getElementById('btnGracias');
+btn.addEventListener('click',()=>{
+  const r=btn.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  const simbolos=['★','✦','✧','⭐'];
+  for(let i=0;i<46;i++){
+    const e=document.createElement('span');e.className='estrella';
+    e.textContent=simbolos[i%simbolos.length];
+    const a=Math.random()*6.283,d=80+Math.random()*Math.min(innerWidth,520)*.55;
+    e.style.left=cx+'px';e.style.top=cy+'px';
+    e.style.fontSize=(12+Math.random()*22)+'px';
+    e.style.setProperty('--dx',Math.cos(a)*d+'px');
+    e.style.setProperty('--dy',(Math.sin(a)*d-40)+'px');
+    e.style.setProperty('--r',(Math.random()*360-180)+'deg');
+    e.style.animationDelay=(Math.random()*.4)+'s';
+    document.body.appendChild(e);
+    setTimeout(()=>e.remove(),3000);
+  }
+  btn.disabled=true;
+  setTimeout(()=>document.getElementById('mensajeFinal').classList.add('in'),350);
+});
+</script>
+</body>
+</html>
